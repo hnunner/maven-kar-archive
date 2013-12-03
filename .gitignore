@@ -4,6 +4,8 @@
 *.jar
 *.war
 *.ear
+
+# Generated Files/Paths #
 target/
 .settings/
 .project

@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.adviser.maven.kar</groupId>
+		<artifactId>maven-kar-archive-greeter</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>maven-kar-archive-greeter-hello</artifactId>
+	<packaging>bundle</packaging>
+
+	<name>iPOJO Hello World :: Greeter :: Hello</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.adviser.maven.kar</groupId>
+            <artifactId>maven-kar-archive-greeter-service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-ipojo-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
