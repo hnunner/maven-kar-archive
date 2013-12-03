@@ -1,0 +1,5 @@
+osgi:install -s mvn:org.apache.felix/org.apache.felix.ipojo/1.11.0
+osgi:install -s mvn:com.adviser.maven.kar/maven-kar-archive-greeter-service/0.0.1-SNAPSHOT
+osgi:install -s mvn:com.adviser.maven.kar/maven-kar-archive-greeter-hello/0.0.1-SNAPSHOT
+osgi:install -s mvn:com.adviser.maven.kar/maven-kar-archive-greeter-goodbye/0.0.1-SNAPSHOT
+osgi:install -s mvn:com.adviser.maven.kar/maven-kar-archive-recipient/0.0.1-SNAPSHOT

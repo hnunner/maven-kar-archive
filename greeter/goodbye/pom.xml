@@ -10,7 +10,7 @@
 	<artifactId>maven-kar-archive-greeter-goodbye</artifactId>
 	<packaging>bundle</packaging>
 
-	<name>iPOJO Hello World :: Greeter :: GoodBye</name>
+	<name>Maven Kar Archive :: Greeter :: GoodBye</name>
 
     <dependencies>
         <dependency>

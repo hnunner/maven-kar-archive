@@ -10,7 +10,7 @@
 	<artifactId>maven-kar-archive-greeter</artifactId>
 	<packaging>pom</packaging>
 
-	<name>iPOJO Hello World :: Greeter</name>
+	<name>Maven Kar Archive :: Greeter</name>
 
 	<modules>
 		<module>service</module>
