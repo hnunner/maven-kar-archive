@@ -17,10 +17,6 @@
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.ipojo</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.ipojo.annotations</artifactId>
-		</dependency>
 
         <dependency>
             <groupId>com.adviser.maven.kar</groupId>
