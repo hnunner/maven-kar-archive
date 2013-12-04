@@ -10,7 +10,7 @@
 	<artifactId>maven-kar-archive-kar</artifactId>
 	<name>Maven Kar Archive :: Kar</name>
 
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
 	<dependencies>
         <dependency>
