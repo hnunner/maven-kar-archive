@@ -1,7 +1,11 @@
 maven-kar-archive
 =================
 
-Example how to create karaf kar archives using maven.
+Example how to create karaf kar archives using maven.  
+
+Deployment
+----------
+* Copy the generated .kar file into [apache-karaf-x.x.x]/deploy folder
 
 CAUTION
 -------
