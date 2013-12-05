@@ -13,10 +13,10 @@
 	<packaging>pom</packaging>
 
 	<dependencies>
-        <dependency>
+        <!-- dependency>
             <groupId>com.adviser.maven.kar</groupId>
             <artifactId>maven-kar-archive-greeter-service</artifactId>
-        </dependency>
+        </dependency -->
         <dependency>
             <groupId>com.adviser.maven.kar</groupId>
             <artifactId>maven-kar-archive-greeter-hello</artifactId>
