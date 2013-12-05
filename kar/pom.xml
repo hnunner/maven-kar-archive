@@ -17,14 +17,14 @@
             <groupId>com.adviser.maven.kar</groupId>
             <artifactId>maven-kar-archive-greeter-service</artifactId>
         </dependency -->
-        <dependency>
-            <groupId>com.adviser.maven.kar</groupId>
-            <artifactId>maven-kar-archive-greeter-hello</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.adviser.maven.kar</groupId>
-            <artifactId>maven-kar-archive-greeter-goodbye</artifactId>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.adviser.maven.kar</groupId> -->
+<!--             <artifactId>maven-kar-archive-greeter-hello</artifactId> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>com.adviser.maven.kar</groupId> -->
+<!--             <artifactId>maven-kar-archive-greeter-goodbye</artifactId> -->
+<!--         </dependency> -->
         <dependency>
             <groupId>com.adviser.maven.kar</groupId>
             <artifactId>maven-kar-archive-recipient</artifactId>
@@ -41,11 +41,13 @@
 						<id>generate</id>
 						<phase>generate-resources</phase>
 						<goals>
+<!--                             <goal>generate-features-file</goal> -->
 							<goal>generate-features-xml</goal>
 						</goals>
 						<configuration>
-							<!-- bundles>src/main/resources/bundles.properties</bundles -->
+							<bundles>src/main/resources/bundles.properties</bundles>
 							<outputFile>${project.build.directory}/features.xml</outputFile>
+                            <karafVersion>2.3.3</karafVersion>
 						</configuration>
 					</execution>
 					<execution>
@@ -55,10 +57,29 @@
 						</goals>
 						<configuration>
 							<featuresFile>${project.build.directory}/features.xml</featuresFile>
+                            <karafVersion>2.3.3</karafVersion>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
+<!--             <plugin> -->
+<!--                 <groupId>org.apache.karaf.tooling</groupId> -->
+<!--                 <artifactId>features-maven-plugin</artifactId> -->
+<!--                 <version>2.3.3</version> -->
+<!--                 <executions> -->
+<!--                     <execution> -->
+<!--                         <id>generate-features-file</id> -->
+<!--                         <goals> -->
+<!--                             <goal>generate-features-file</goal> -->
+<!--                         </goals> -->
+<!--                         <configuration> -->
+<!--                             <karafVersion>2.3.3</karafVersion> -->
+<!--                         </configuration> -->
+<!--                     </execution> -->
+<!--                 </executions> -->
+<!--             </plugin> -->
+
 		</plugins>
 	</build>
 </project>
