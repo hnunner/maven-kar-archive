@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+
+    <!-- features:addUrl mvn:com.adviser.maven.kar/maven-kar-archive-greeter-goodbye/${project.version}/xml -->
+
+    <repository>http://repo1.maven.org/maven2/org/apache/felix/org.apache.felix.ipojo.features/${ipojo.version}/org.apache.felix.ipojo.features-${ipojo.version}.xml</repository>
+    <repository>mvn:com.adviser.maven.kar/maven-kar-archive-greeter-service/${project.version}/xml</repository>
+
+    <feature name='maven-kar-archive-greeter-goodbye' version='${project.version}'>
+        <feature version="${ipojo.version}">ipojo-all</feature>
+        <feature version="${project.version}">maven-kar-archive-greeter-service</feature>
+        <bundle>mvn:com.adviser.maven.kar/maven-kar-archive-greeter-goodbye/${project.version}</bundle>
+    </feature>
+
+</features>
