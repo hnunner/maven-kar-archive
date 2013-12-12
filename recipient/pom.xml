@@ -58,6 +58,11 @@
 									<file>target/classes/features.xml</file>
 									<type>xml</type>
 								</artifact>
+								<!-- in case a config file must be deployed - only one possible (see also features.xml) -->
+                                <!-- artifact>
+                                    <file>target/classes/config-default.cfg</file>
+                                    <type>cfg</type>
+                                </artifact -->
 							</artifacts>
 						</configuration>
 					</execution>

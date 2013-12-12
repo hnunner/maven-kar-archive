@@ -11,6 +11,8 @@
         <feature version="${ipojo.version}">ipojo-all</feature>
         <feature version="${project.version}">maven-kar-archive-greeter-service</feature>
         <bundle>mvn:com.adviser.maven.kar/maven-kar-archive-recipient/${project.version}</bundle>
+        <!-- in case a config file must be deployed - only one possible (see also pom.xml) -->
+        <!-- configfile finalname="/etc/config-default.cfg">mvn:com.adviser.maven.kar/maven-kar-archive-recipient/${project.version}/cfg</configfile -->
     </feature>
 
 </features>
