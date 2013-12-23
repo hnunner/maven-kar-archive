@@ -3,6 +3,7 @@ package com.adviser.maven.kar.greeter.hello;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import org.apache.karaf.features.Feature;
 import org.apache.karaf.features.FeaturesService;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -20,6 +22,9 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.karaf.options.LogLevelOption.LogLevel;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
+
+import com.adviser.maven.kar.greeter.service.GreeterService;
 
 /**
  * @author h.nunner
@@ -29,12 +34,18 @@ public class HelloGreeterTest {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(HelloGreeterTest.class.getName());
+    /** feature name */
+    private static final String FEATURE_NAME = "maven-kar-archive-greeter-hello";
+    /** service class name */
+    private static final String SERVICE_CLAZZ_NAME = GreeterService.class.getName();
 
+    /** features service */
     @Inject
-    protected FeaturesService featuresService;
+    private FeaturesService featuresService;
 
+    /** bundle context */
     @Inject
-    protected BundleContext context;
+    private BundleContext context;
 
     /**
      * General test configuration setting up configurations.
@@ -46,113 +57,60 @@ public class HelloGreeterTest {
     @Configuration
     public static Option[] configure() throws Exception {
         return new Option[] {
+                // provision and launch a container based on a Apache Karaf distribution
                 karafDistributionConfiguration()
                         .frameworkUrl(
                                 maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject())
-                        .useDeployFolder(false).karafVersion("2.3.3").unpackDirectory(new File("target/paxexam/unpack/")),
-
+                        .useDeployFolder(false).karafVersion("2.3.3").unpackDirectory(new File("target/pax/")),
+                // keeps the runtime folder after finishing the tests
+                keepRuntimeFolder(),
+                // don't bother with local console output as it just ends up cluttering the logs
+                // configureConsole().ignoreLocalConsole(),
+                // default is WARN
                 logLevel(LogLevel.INFO),
-
-
-
+                // feature required by the following tests
                 features(
                         maven().groupId("com.adviser.maven.kar").artifactId("maven-kar-archive-greeter-hello").type("xml")
-                                .classifier("features").versionAsInProject(), "greeter-hello")
-//                features(
-//                        maven().groupId("org.apache.karaf.assemblies.features").artifactId("enterprise").type("xml")
-//                                .classifier("features").versionAsInProject(), "transaction", "jpa", "jndi"),
-//                features(maven().groupId("org.apache.activemq").artifactId("activemq-karaf").type("xml").classifier("features")
-//                        .versionAsInProject(), "activemq-blueprint", "activemq-camel"),
-//                features(maven().groupId("org.apache.cxf.karaf").artifactId("apache-cxf").type("xml").classifier("features")
-//                        .versionAsInProject(), "cxf-jaxws"),
-//                features(maven().groupId("org.apache.camel.karaf").artifactId("apache-camel").type("xml").classifier("features")
-//                        .versionAsInProject(), "camel-blueprint", "camel-jms", "camel-jpa", "camel-mvel", "camel-jdbc",
-//                        "camel-cxf", "camel-test"),
-//
-//                KarafDistributionOption.editConfigurationFilePut("etc/org.ops4j.pax.url.mvn.cfg",
-//                        "org.ops4j.pax.url.mvn.proxySupport", "true"),
-//                keepRuntimeFolder(),
-//
-//                mavenBundle().groupId("com.h2database").artifactId("h2").version("1.3.167"),
-//                mavenBundle().groupId("de.nierbeck.camel.exam.demo").artifactId("entities").versionAsInProject(),
-//                mavenBundle().groupId("org.ops4j.pax.tipi").artifactId("org.ops4j.pax.tipi.hamcrest.core").versionAsInProject(),
-//                streamBundle(
-//                        bundle().add("OSGI-INF/blueprint/datasource.xml", new File("src/sample/resources/datasource.xml").toURL())
-//                                .set(Constants.BUNDLE_SYMBOLICNAME, "de.nierbeck.camel.exam.demo.datasource")
-//                                .set(Constants.DYNAMICIMPORT_PACKAGE, "*").build()).start(),
-//                streamBundle(
-//                        bundle().add("OSGI-INF/blueprint/mqbroker.xml", new File("src/sample/resources/mqbroker-test.xml").toURL())
-//                                .set(Constants.BUNDLE_SYMBOLICNAME, "de.nierbeck.camel.exam.demo.broker")
-//                                .set(Constants.DYNAMICIMPORT_PACKAGE, "*").build()).start(),
-//                streamBundle(
-//                        bundle().add(JmsDestinations.class)
-//                                .add(WebServiceOrder.class)
-//                                .add(CamelMessageBean.class)
-//                                .add(RouteID.class)
-//                                .add(OrderWebServiceRoute.class)
-//                                .add(OutMessageProcessor.class)
-//                                .add(MessageLogConverter.class)
-//                                .add("OSGI-INF/blueprint/camel-main-context.xml",
-//                                        new File("src/main/resources/OSGI-INF/blueprint/camel-context.xml").toURL())
-//                                .add("OSGI-INF/blueprint/jms-context.xml",
-//                                        new File("src/main/resources/OSGI-INF/blueprint/jms-config.xml").toURL())
-//                                .add("wsdl/WebServiceOrder.wsdl", new File("target/generated/wsdl/WebServiceOrder.wsdl").toURL())
-//                                .set(Constants.BUNDLE_SYMBOLICNAME, "de.nierbeck.camel.exam.demo.route-control")
-//                                .set(Constants.DYNAMICIMPORT_PACKAGE, "*")
-//                                .set(Constants.EXPORT_PACKAGE, "wsdl, de.nierbeck.camel.exam.demo.control").build()).start()
+                                .versionAsInProject(), FEATURE_NAME)
+                // test executes in another process, so Pax Exam must be launched with debugging enabled
+                // debugConfiguration("5000", true),
         };
     }
 
+    /**
+     * Tests if the feature has been installed correctly.
+     *
+     * @throws Exception
+     *          on fail
+     */
     @Test
-    public void startup() throws Exception {
-        Feature greeterHelloFeature = featuresService.getFeature("maven-kar-archive-greeter-hello");
-        if (greeterHelloFeature != null) {
-            LOG.info("Feature found: " + greeterHelloFeature.getName());
-        } else {
-            LOG.warning("Feature not found.");
-        }
+    public void featureTest() throws Exception {
+        Feature greeterFeature = featuresService.getFeature(FEATURE_NAME);
+        Assert.assertNotNull("Feature not found: " + FEATURE_NAME, greeterFeature);
+        Assert.assertTrue("Feature not installed: " + FEATURE_NAME, featuresService.isInstalled(greeterFeature));
 
-        boolean isInstalled = featuresService.isInstalled(greeterHelloFeature);
-        if (isInstalled) {
-            LOG.info("Feature installed: " + greeterHelloFeature.getName());
-        } else {
-            LOG.warning("Feature not installed.");
-        }
-
-
-        Assert.assertTrue(isInstalled);
+        LOG.info("\n#######################\nFeature successfully installed: " + FEATURE_NAME + "\n#######################");
     }
 
+    /**
+     * Tests if the service can be retrieved correctly.
+     *
+     * @throws Exception
+     *          on fail
+     */
+    @Test
+    @Ignore
+    public void serviceTest() throws Exception {
+        ServiceTracker serviceTracker = new ServiceTracker(context, SERVICE_CLAZZ_NAME, null);
 
-//        context.get
-//
-//        Bundle bundle = getInstalledBundle(ctx, "fancyfoods.department.cheese");
-//        try {
-//        bundle.start();
-//        } catch (BundleException e) {
-//        fail(e.toString()); #1
-//        }
-//        SpecialOffer offer = waitForService(bundle, SpecialOffer.class);
-//        assertNotNull("The special offer gave a null food.", #2
-//        offer.getOfferFood());
-//        assertEquals("Did not expect " + offer.getOfferFood().getName(),
-//        "Wensleydale cheese", offer.getOfferFood().getName());
-//        }
-//
-//    protected  T waitForService(Bundle b, Class clazz) {
-//        try {
-//        BundleContext bc = b.getBundleContext();
-//        ServiceTracker st = new ServiceTracker(bc, clazz.getName(), null);
-//        st.open();
-//        Object service = st.waitForService(30 * 1000); #3
-//        assertNotNull("No service of the type " + clazz.getName()
-//        + " was registered.", service);
-//        st.close();
-//        return (T) service;
-//        } catch (Exception e) {
-//        fail("Failed to register services for " + b.getSymbolicName()
-//        + e.getMessage());
-//        return null;
-//        }
-//    }
+        serviceTracker.open();
+        HelloGreeter greeterService = (HelloGreeter) serviceTracker.waitForService(30 * 1000);
+        serviceTracker.close();
+
+        Assert.assertNotNull("No service registered: " + SERVICE_CLAZZ_NAME , greeterService);
+        Assert.assertEquals("Hello test", greeterService.greet("test"));
+
+        LOG.info("\n#######################\nService successfully installed: " + SERVICE_CLAZZ_NAME + "\n#######################");
+    }
+
 }

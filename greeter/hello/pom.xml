@@ -53,10 +53,10 @@
             <type>zip</type>
         </dependency>
 
-<!--         <dependency> -->
-<!--             <groupId>org.slf4j</groupId> -->
-<!--             <artifactId>slf4j-log4j12</artifactId> -->
-<!--         </dependency> -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -102,6 +102,12 @@
 					</execution>
 				</executions>
 			</plugin>
+
+            <!-- resolves "versionAsInProject" in Pax Exam configuration/tests -->
+		    <plugin>
+		      <groupId>org.apache.servicemix.tooling</groupId>
+		      <artifactId>depends-maven-plugin</artifactId>
+		    </plugin>
 		</plugins>
 	</build>
 </project>
