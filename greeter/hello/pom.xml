@@ -14,14 +14,51 @@
 	<name>Maven Kar Archive :: Greeter :: Hello</name>
 
     <dependencies>
+        <!-- project dependencies -->
         <dependency>
             <groupId>com.adviser.maven.kar</groupId>
             <artifactId>maven-kar-archive-greeter-service</artifactId>
         </dependency>
 
+        <!-- external dependencies -->
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
+
+        <!-- test dependencies -->
+        <!-- Pax Exam -->
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-container-karaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-junit4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-link-mvn</artifactId>
+        </dependency>
+        <!-- Apache Karaf -->
+            <dependency>
+                <groupId>org.apache.karaf</groupId>
+                <artifactId>apache-karaf</artifactId>
+                <type>zip</type>
+            </dependency>
+        <!-- required to resolve mvn: URLs and to provision Maven bundles -->
+        <dependency>
+            <groupId>org.ops4j.pax.url</groupId>
+            <artifactId>pax-url-aether</artifactId>
+        </dependency>
+        <!-- test logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 
@@ -62,6 +99,12 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- to resolve "versionAsInProject()" in Pax Exam tests -->
+            <plugin>
+                <groupId>org.apache.servicemix.tooling</groupId>
+                <artifactId>depends-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

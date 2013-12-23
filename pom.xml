@@ -19,10 +19,16 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ipojo.version>1.11.0</ipojo.version>
+		<!-- test dependency versions -->
+        <exam.version>3.4.0</exam.version>
+        <karaf.version>2.3.3</karaf.version>
+        <url.version>1.6.0</url.version>
+        <slf4j.version>1.7.5</slf4j.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+            <!-- project dependencies -->
 			<dependency>
 				<groupId>com.adviser.maven.kar</groupId>
 				<artifactId>maven-kar-archive-greeter-service</artifactId>
@@ -44,6 +50,7 @@
 				<version>${project.version}</version>
 			</dependency>
 
+            <!-- external dependencies -->
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.ipojo</artifactId>
@@ -54,16 +61,66 @@
 				<artifactId>org.apache.felix.ipojo.annotations</artifactId>
 				<version>${ipojo.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>org.apache.felix.ipojo</artifactId>
-				<version>${ipojo.version}</version>
-			</dependency>
+
+			<!-- test dependencies -->
+	        <!-- Pax Exam -->
+	        <dependency>
+	            <groupId>org.ops4j.pax.exam</groupId>
+	            <artifactId>pax-exam-container-karaf</artifactId>
+	            <version>${exam.version}</version>
+	            <scope>test</scope>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.ops4j.pax.exam</groupId>
+	            <artifactId>pax-exam-junit4</artifactId>
+	            <version>${exam.version}</version>
+	            <scope>test</scope>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.ops4j.pax.exam</groupId>
+	            <artifactId>pax-exam-link-mvn</artifactId>
+	            <version>${exam.version}</version>
+	            <scope>test</scope>
+	        </dependency>
+	        <!-- Apache Karaf -->
+	        <dependency>
+	            <groupId>org.apache.karaf</groupId>
+	            <artifactId>apache-karaf</artifactId>
+	            <version>${karaf.version}</version>
+	            <type>zip</type>
+	            <scope>test</scope>
+	        </dependency>
+	        <!-- required to resolve mvn: URLs and to provision Maven bundles -->
+	        <dependency>
+	            <groupId>org.ops4j.pax.url</groupId>
+	            <artifactId>pax-url-aether</artifactId>
+	            <version>${url.version}</version>
+	            <scope>test</scope>
+	        </dependency>
+	        <!-- test logging -->
+	        <dependency>
+	            <groupId>org.slf4j</groupId>
+	            <artifactId>slf4j-simple</artifactId>
+	            <version>${slf4j.version}</version>
+	            <scope>test</scope>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.slf4j</groupId>
+	            <artifactId>slf4j-api</artifactId>
+	            <version>${slf4j.version}</version>
+	            <scope>test</scope>
+	        </dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -111,6 +168,21 @@
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>1.8</version>
 			</plugin>
+
+            <!-- to resolve "versionAsInProject()" in Pax Exam tests -->
+            <plugin>
+                <groupId>org.apache.servicemix.tooling</groupId>
+                <artifactId>depends-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <id>generate-depends-file</id>
+                        <goals>
+                            <goal>generate-depends-file</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
