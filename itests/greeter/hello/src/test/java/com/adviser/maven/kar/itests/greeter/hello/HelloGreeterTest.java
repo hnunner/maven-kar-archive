@@ -1,4 +1,4 @@
-package com.adviser.maven.kar.greeter.hello;
+package com.adviser.maven.kar.itests.greeter.hello;
 
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import org.apache.karaf.features.Feature;
 import org.apache.karaf.features.FeaturesService;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -24,6 +23,7 @@ import org.ops4j.pax.exam.karaf.options.LogLevelOption.LogLevel;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
+import com.adviser.maven.kar.greeter.hello.HelloGreeter;
 import com.adviser.maven.kar.greeter.service.GreeterService;
 
 /**
@@ -62,6 +62,8 @@ public class HelloGreeterTest {
                         .frameworkUrl(
                                 maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("zip").versionAsInProject())
                         .useDeployFolder(false).karafVersion("2.3.3").unpackDirectory(new File("target/pax/")),
+                // adds the key-value pairs to the defined configuration files
+//                editConfigurationFilePut("etc/system.properties", "firstProp", "value"),
                 // keeps the runtime folder after finishing the tests
                 keepRuntimeFolder(),
                 // don't bother with local console output as it just ends up cluttering the logs
@@ -70,8 +72,10 @@ public class HelloGreeterTest {
                 logLevel(LogLevel.INFO),
                 // feature required by the following tests
                 features(
+//                        new RawUrlReference("target/classes/features.xml"),
                         maven().groupId("com.adviser.maven.kar").artifactId("maven-kar-archive-greeter-hello").type("xml")
-                                .versionAsInProject(), FEATURE_NAME)
+                                .versionAsInProject(),
+                                FEATURE_NAME)
                 // test executes in another process, so Pax Exam must be launched with debugging enabled
                 // debugConfiguration("5000", true),
         };
@@ -99,7 +103,6 @@ public class HelloGreeterTest {
      *          on fail
      */
     @Test
-    @Ignore
     public void serviceTest() throws Exception {
         ServiceTracker serviceTracker = new ServiceTracker(context, SERVICE_CLAZZ_NAME, null);
 
