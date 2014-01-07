@@ -41,6 +41,8 @@ public class HelloGreeterTest {
     private static final String FEATURE_NAME = "maven-kar-archive-greeter-hello";
     /** service class name */
     private static final String SERVICE_CLAZZ_NAME = GreeterService.class.getName();
+    /** success delimiter */
+    private static final String SUCCESS_DELIMITER = "\n########################################################################";
 
     /** features service */
     @Inject
@@ -95,8 +97,7 @@ public class HelloGreeterTest {
         Feature greeterFeature = featuresService.getFeature(FEATURE_NAME);
         Assert.assertNotNull("Feature not found: " + FEATURE_NAME, greeterFeature);
         Assert.assertTrue("Feature not installed: " + FEATURE_NAME, featuresService.isInstalled(greeterFeature));
-
-        LOG.info("\n#######################\nFeature successfully installed: " + FEATURE_NAME + "\n#######################");
+        logSuccess("Feature successfully installed: " + FEATURE_NAME);
     }
 
     /**
@@ -107,6 +108,7 @@ public class HelloGreeterTest {
      */
     @Test
     public void serviceTest() throws Exception {
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         ServiceTracker serviceTracker = new ServiceTracker(context, SERVICE_CLAZZ_NAME, null);
 
         serviceTracker.open();
@@ -116,8 +118,19 @@ public class HelloGreeterTest {
         Assert.assertNotNull("No service registered: " + SERVICE_CLAZZ_NAME , greeterService);
         Assert.assertEquals("Unexpected message: " + greeterService.greet("test") + ", expected: Hello test",
                 "Hello test", greeterService.greet("test"));
+        logSuccess("Service successfully installed: " + SERVICE_CLAZZ_NAME);
+    }
 
-        LOG.info("\n#######################\nService successfully installed: " + SERVICE_CLAZZ_NAME + "\n#######################");
+    /**
+     * Logs the given message on test success.
+     *
+     * @param message
+     *          the message to be logged
+     */
+    private void logSuccess(String message) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(SUCCESS_DELIMITER).append("\n").append(message).append(SUCCESS_DELIMITER);
+        LOG.info(sb.toString());
     }
 
 }
