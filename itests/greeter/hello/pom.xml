@@ -20,6 +20,12 @@
 			<artifactId>maven-kar-archive-greeter-hello</artifactId>
 		</dependency>
 
+		<!-- Service Tracker dependency -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+        </dependency>
+
 		<!-- PAX-EXAM dependencies -->
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
